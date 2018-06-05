@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本篇入门是根据Docker官方文档中Get started with Docker执行的，自己的操作记录还有一些翻译. Docker是开发人员和系统管理员使用容器开发，部署和运行应用程序的平台。使用Linux容器来部署应用程序称为集装箱化。 容器不是新的，但它们用于轻松部署应用程序。参考这一篇文章 只要一小时，零基础入门Docker">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker入门">
+<meta property="og:url" content="http://yoursite.com/notes/docker入门/20180605.html">
+<meta property="og:site_name" content="Googol&#39;s Notes">
+<meta property="og:description" content="本篇入门是根据Docker官方文档中Get started with Docker执行的，自己的操作记录还有一些翻译. Docker是开发人员和系统管理员使用容器开发，部署和运行应用程序的平台。使用Linux容器来部署应用程序称为集装箱化。 容器不是新的，但它们用于轻松部署应用程序。参考这一篇文章 只要一小时，零基础入门Docker">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/images/docker-part2-1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part2-2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part2-3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part2-4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part3-1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part4-1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part4-2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/docker-part4-3.jpg">
+<meta property="og:updated_time" content="2018-06-05T09:13:47.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker入门">
+<meta name="twitter:description" content="本篇入门是根据Docker官方文档中Get started with Docker执行的，自己的操作记录还有一些翻译. Docker是开发人员和系统管理员使用容器开发，部署和运行应用程序的平台。使用Linux容器来部署应用程序称为集装箱化。 容器不是新的，但它们用于轻松部署应用程序。参考这一篇文章 只要一小时，零基础入门Docker">
+<meta name="twitter:image" content="http://yoursite.com/images/docker-part2-1.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Googol's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/notes/docker入门/20180605.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>docker入门 | Googol's Notes</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Googol's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">古戈大神's Death Note</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/notes/docker入门/20180605.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Googol Buck">
+      <meta itemprop="description" content="Until Death">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Googol's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">docker入门
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-05 05:09:37 / 修改时间：05:13:47" itemprop="dateCreated datePublished" datetime="2018-06-05T05:09:37-04:00">2018-06-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇入门是根据<a href="https://docs.docker.com/" target="_blank" rel="noopener">Docker官方文档</a>中<a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">Get started with Docker</a>执行的，自己的操作记录还有一些翻译.</p>
+<p><a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a>是开发人员和系统管理员使用容器开发，部署和运行应用程序的平台。<br>使用Linux容器来部署应用程序称为集装箱化。 容器不是新的，但它们用于轻松部署应用程序。<br>参考这一篇文章 <a href="https://zhuanlan.zhihu.com/p/23599229" target="_blank" rel="noopener">只要一小时，零基础入门Docker</a></p>
+<a id="more"></a>
+<h3 id="Docker-安装"><a href="#Docker-安装" class="headerlink" title="Docker 安装"></a>Docker 安装</h3><p>根据自己的系统下载相应的版本. <a href="https://docs.docker.com/install/" target="_blank" rel="noopener">Install Docker</a>, 我的是win10, 所以下载的Windows版本, 下载完后正常安装即可.</p>
+<h4 id="安装完后，可以看一下docker的版本"><a href="#安装完后，可以看一下docker的版本" class="headerlink" title="安装完后，可以看一下docker的版本"></a>安装完后，可以看一下docker的版本</h4><p>用管理员权限打开Power Shell，用cmd也是一样的.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker --version</span><br><span class="line">Docker version 17.12.0-ce, build c97c6d6</span><br></pre></td></tr></table></figure></p>
+<h4 id="运行docker-version-或-docker-info-看详细信息"><a href="#运行docker-version-或-docker-info-看详细信息" class="headerlink" title="运行docker version 或 docker info 看详细信息"></a>运行<code>docker version</code> 或 <code>docker info</code> 看详细信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker info</span><br><span class="line">Containers: 5</span><br><span class="line"> Running: 3</span><br><span class="line"> Paused: 0</span><br><span class="line"> Stopped: 2</span><br><span class="line">Images: 3</span><br><span class="line">Server Version: 17.12.1-ce</span><br><span class="line">Storage Driver: aufs</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="测试Docker安装"><a href="#测试Docker安装" class="headerlink" title="测试Docker安装"></a>测试Docker安装</h4><p>通过运行简单的Docker镜像来测试安装是否工作正常<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker run hello-world</span><br><span class="line">Unable to find image &apos;hello-world:latest&apos; locally</span><br><span class="line">latest: Pulling from library/hello-world</span><br><span class="line">ca4f61b1923c: Pull complete</span><br><span class="line">Digest: sha256:083de497cff944f969d8499ab94f07134c50bcf5e6b9559b27182d3fa80ce3f7</span><br><span class="line">Status: Downloaded newer image for hello-world:latest</span><br><span class="line"></span><br><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>列出已下载的镜像:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker image ls</span><br><span class="line">REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">hello-world              latest              f2a91732366c        3 months ago        1.85kB</span><br></pre></td></tr></table></figure></p>
+<p>列出存在的容器，如果容器正在运行可不加 <code>--all</code> 选项:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker container ls --all</span><br><span class="line">CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS                      PORTS               NAMES</span><br><span class="line">eda79c42ec80        hello-world                    &quot;/hello&quot;            7 minutes ago       Exited (0) 7 minutes ago                        gifted_booth</span><br></pre></td></tr></table></figure></p>
+<h4 id="回顾并作表"><a href="#回顾并作表" class="headerlink" title="回顾并作表"></a>回顾并作表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">## List Docker CLI commands</span><br><span class="line">docker</span><br><span class="line">docker container --help</span><br><span class="line"></span><br><span class="line">## Display Docker version and info</span><br><span class="line">docker --version</span><br><span class="line">docker version</span><br><span class="line">docker info</span><br><span class="line"></span><br><span class="line">## Excecute Docker image</span><br><span class="line">docker run hello-world</span><br><span class="line"></span><br><span class="line">## List Docker images</span><br><span class="line">docker image ls</span><br><span class="line"></span><br><span class="line">## List Docker containers (running, all, all in quiet mode)</span><br><span class="line">docker container ls</span><br><span class="line">docker container ls --all</span><br><span class="line">docker container ls -a -q</span><br></pre></td></tr></table></figure>
+<h3 id="Part-2-Containers"><a href="#Part-2-Containers" class="headerlink" title="Part 2:Containers"></a>Part 2:Containers</h3><h4 id="通过-Dockerfile-创建镜像"><a href="#通过-Dockerfile-创建镜像" class="headerlink" title="通过 Dockerfile 创建镜像"></a>通过 <code>Dockerfile</code> 创建镜像</h4><p>创建一个空文件夹(我创建目录是Docker)，并切换到该文件夹下，创建一个叫 Dockerfile 的文件，文件内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># Use an official Python runtime as a parent image</span><br><span class="line">FROM python:2.7-slim</span><br><span class="line"></span><br><span class="line"># Set the working directory to /app</span><br><span class="line">WORKDIR /app</span><br><span class="line"></span><br><span class="line"># Copy the current directory contents into the container at /app</span><br><span class="line">ADD . /app</span><br><span class="line"></span><br><span class="line"># Install any needed packages specified in requirements.txt</span><br><span class="line">RUN pip install --trusted-host pypi.python.org -r requirements.txt</span><br><span class="line"></span><br><span class="line"># Make port 80 available to the world outside this container</span><br><span class="line">EXPOSE 80</span><br><span class="line"></span><br><span class="line"># Define environment variable</span><br><span class="line">ENV NAME World</span><br><span class="line"></span><br><span class="line"># Run app.py when the container launches</span><br><span class="line">CMD [&quot;python&quot;, &quot;app.py&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>这个 <code>Dockerfile</code> 引用的两个文件 <code>app.py</code> 和 <code>requirements.txt</code> 我们也要创建.<br><code>requirements.txt</code> 和 <code>app.py</code> 要跟 <code>Dockerfile</code> 在同一目录下.</p>
+<p><code>requirements.txt</code> 内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flask</span><br><span class="line">Redis</span><br></pre></td></tr></table></figure></p>
+<p><code>app.py</code> 内容如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> redis <span class="keyword">import</span> Redis, RedisError</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># Connect to Redis</span></span><br><span class="line">redis = Redis(host=<span class="string">"redis"</span>, db=<span class="number">0</span>, socket_connect_timeout=<span class="number">2</span>, socket_timeout=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route("/")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        visits = redis.incr(<span class="string">"counter"</span>)</span><br><span class="line">    <span class="keyword">except</span> RedisError:</span><br><span class="line">        visits = <span class="string">"&lt;i&gt;cannot connect to Redis, counter disabled&lt;/i&gt;"</span></span><br><span class="line"></span><br><span class="line">    html = <span class="string">"&lt;h3&gt;Hello &#123;name&#125;!&lt;/h3&gt;"</span> \</span><br><span class="line">           <span class="string">"&lt;b&gt;Hostname:&lt;/b&gt; &#123;hostname&#125;&lt;br/&gt;"</span> \</span><br><span class="line">           <span class="string">"&lt;b&gt;Visits:&lt;/b&gt; &#123;visits&#125;"</span></span><br><span class="line">    <span class="keyword">return</span> html.format(name=os.getenv(<span class="string">"NAME"</span>, <span class="string">"world"</span>), hostname=socket.gethostname(), visits=visits)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>, port=<span class="number">80</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="构建app"><a href="#构建app" class="headerlink" title="构建app"></a>构建app</h4><p>现在创建的目录下的文件有：<br><img src="/images/docker-part2-1.jpg" alt="docker-part2-1.jpg"></p>
+<p>现在运行构建命令，这将创建一个Docker镜像，我们使用 <code>-t</code> 选项来标记它.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t friendlyhello .</span><br></pre></td></tr></table></figure></p>
+<p>查看本地Docker镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker image ls</span><br><span class="line">REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">friendlyhello            latest              bde374d2c5c0        27 hours ago        148MB</span><br></pre></td></tr></table></figure></p>
+<h4 id="运行app"><a href="#运行app" class="headerlink" title="运行app"></a>运行app</h4><p>运行此app，使用 <code>-p</code> 选项，映射你电脑的4000端口到容器的公开端口80：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 4000:80 friendlyhello</span><br></pre></td></tr></table></figure></p>
+<p>运行的输出如下：<br><img src="/images/docker-part2-2.jpg" alt="docker-part2-2.jpg"></p>
+<p>你会看到Python服务在 <code>http://0.0.0.0:80</code> 的信息，但是这个信息是来自内部容器的，它不知道我们已经把80端口映射到4000端口了，所以正确的URL是 <code>http://localhost:4000</code>。</p>
+<p>到浏览器中输入URL后显示的内容：<br><img src="/images/docker-part2-3.jpg" alt="docker-part2-3.jpg"></p>
+<p>在终端中按 <code>CTRL+C</code> 进行退出。<br>但在Windows系统中，<code>CTRL+C</code> 是不能停止容器的。所以首先按 <code>CTRL+C</code> 回到提示符（或者打开另一个终端），然后输入 <code>docker container ls</code> 列出正在运行的容器，<br>然后执行 <code>docker container stop &lt;Container NAME or ID&gt;</code> 停止容器。</p>
+<p>后台运行app：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 4000:80 friendlyhello</span><br></pre></td></tr></table></figure></p>
+<p>你会看到一个很长的容器ID, 也可以执行 <code>docker container ls</code> 获得简化的容器ID。<br><img src="/images/docker-part2-4.jpg" alt="docker-part2-4.jpg"></p>
+<p>可以注意到 <code>CONTAINER ID</code> 和 <code>http://localhost:4000</code> 上的Hostname是匹配的。</p>
+<p>使用 <code>docker container stop</code> 停止进程，这里使用 <code>CONTAINER ID</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container stop ecb05580cad7</span><br></pre></td></tr></table></figure></p>
+<h4 id="分享你的镜像"><a href="#分享你的镜像" class="headerlink" title="分享你的镜像"></a>分享你的镜像</h4><p>(1) 到<a href="/https://cloud.docker.com">cloud.docker.com</a>注册一个账号。</p>
+<p>(2) 在终端执行 <code>docker login</code> , 根据提示输入用户名、密码即可登录。</p>
+<p><strong>标记镜像</strong><br>推荐的名称形式是 <code>username/repository:tag</code> 。<br>语法形式：<code>docker tag image username/repository:tag</code><br>example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag friendlyhello googolprex/get-started:part2</span><br></pre></td></tr></table></figure></p>
+<p>运行 <code>docker image ls</code> 查看本地镜像。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker image ls</span><br><span class="line">REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">googolprex/get-started   part2               bde374d2c5c0        47 hours ago        148MB</span><br><span class="line">friendlyhello            latest              bde374d2c5c0        47 hours ago        148MB</span><br><span class="line">python                   2.7-slim            52ad41c7aea4        2 weeks ago         139MB</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>(3) 推送本地镜像到<a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push googolprex/get-started:part2</span><br></pre></td></tr></table></figure></p>
+<p>(4) 现在就可在任何地方下载你的镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull googolprex/get-started:part2</span><br></pre></td></tr></table></figure></p>
+<p>或下载并运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 4000:80 googolprex/get-started:part2</span><br></pre></td></tr></table></figure></p>
+<h3 id="Part-3-Services"><a href="#Part-3-Services" class="headerlink" title="Part 3: Services"></a>Part 3: Services</h3><h4 id="创建-docker-compose-yml-文件"><a href="#创建-docker-compose-yml-文件" class="headerlink" title="创建 docker-compose.yml 文件"></a>创建 docker-compose.yml 文件</h4><p><code>docker-compose.yml</code> 文件定义了Docker 容器的行为。<br>文件内容如下：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  web:</span></span><br><span class="line">    <span class="comment"># replace username/repo:tag with your name and image details</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">googolprex/get-started:part2</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      replicas:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">      resources:</span></span><br><span class="line"><span class="attr">        limits:</span></span><br><span class="line"><span class="attr">          cpus:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">          memory:</span> <span class="number">50</span><span class="string">M</span></span><br><span class="line"><span class="attr">      restart_policy:</span></span><br><span class="line"><span class="attr">        condition:</span> <span class="string">on-failure</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  webnet:</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="运行此Services"><a href="#运行此Services" class="headerlink" title="运行此Services"></a>运行此Services</h4><p>(1) 设置 <code>swarm manager</code> 节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init</span><br></pre></td></tr></table></figure></p>
+<p>(2) 运行并设置app名为 <code>getstartedlab</code> ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure></p>
+<p>这个服务栈运行5个容器实例</p>
+<p>查看service ID<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker service ls</span><br><span class="line">ID                  NAME                MODE                REPLICAS            IMAGE                          PORTS</span><br><span class="line">okrfhvests38        getstartedlab_web   replicated          5/5                 googolprex/get-started:part2   *:80-&gt;80/tcp</span><br></pre></td></tr></table></figure></p>
+<p>你会发现NAME这一栏是 <code>getstartedlab_web</code>，它是app名拼接上服务名。</p>
+<p>查看每个服务有多少个任务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker service ps getstartedlab_web</span><br><span class="line">ID                  NAME                  IMAGE                          NODE                    DESIRED STATE       CURRENT STATE            ERROR               PORTS</span><br><span class="line">m560wuq5jhvx        getstartedlab_web.1   googolprex/get-started:part2   linuxkit-00155d01d801   Running             Running 10 minutes ago</span><br><span class="line">vf8nr4rondmq        getstartedlab_web.2   googolprex/get-started:part2   linuxkit-00155d01d801   Running             Running 10 minutes ago</span><br><span class="line">w90dhgndqppj        getstartedlab_web.3   googolprex/get-started:part2   linuxkit-00155d01d801   Running             Running 10 minutes ago</span><br><span class="line">h6j4tojq8asw        getstartedlab_web.4   googolprex/get-started:part2   linuxkit-00155d01d801   Running             Running 10 minutes ago</span><br><span class="line">4odlyrbirqod        getstartedlab_web.5   googolprex/get-started:part2   linuxkit-00155d01d801   Running             Running 10 minutes ago</span><br></pre></td></tr></table></figure></p>
+<p>查看正在运行的容器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker container ls</span><br><span class="line">CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">4ce2cd22d3dd        googolprex/get-started:part2   &quot;python app.py&quot;     13 minutes ago      Up 13 minutes       80/tcp              getstartedlab_web.1.m560wuq5jhvxdxslfr8degpy7</span><br><span class="line">5651249e9614        googolprex/get-started:part2   &quot;python app.py&quot;     13 minutes ago      Up 13 minutes       80/tcp              getstartedlab_web.4.h6j4tojq8asw1foirs6txor7m</span><br><span class="line">2b703c563cbd        googolprex/get-started:part2   &quot;python app.py&quot;     13 minutes ago      Up 13 minutes       80/tcp              getstartedlab_web.3.w90dhgndqppj6bfros0gpdud3</span><br><span class="line">ce18f72faffa        googolprex/get-started:part2   &quot;python app.py&quot;     13 minutes ago      Up 13 minutes       80/tcp              getstartedlab_web.2.vf8nr4rondmqjmimmwpde9kwp</span><br><span class="line">a370a86ec193        googolprex/get-started:part2   &quot;python app.py&quot;     13 minutes ago      Up 13 minutes       80/tcp              getstartedlab_web.5.4odlyrbirqodr4ufgjzmb5xer</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器上输入 <code>http://localhost</code> ：<br><img src="/images/docker-part3-1.jpg" alt="docker-part3-1.jpg"></p>
+<p>若修改了 <code>docker-compose.yml</code> 文件，重新运行即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure></p>
+<p>(3) 关闭app和swarm</p>
+<p>关闭app：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure></p>
+<p>关闭swarm：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave --force</span><br></pre></td></tr></table></figure></p>
+<h3 id="Part4-Swarms"><a href="#Part4-Swarms" class="headerlink" title="Part4: Swarms"></a>Part4: Swarms</h3><h4 id="创建虚拟机"><a href="#创建虚拟机" class="headerlink" title="创建虚拟机"></a>创建虚拟机</h4><p>(1) <strong>创建虚拟交换机</strong><br>不同操作系统创建的方法不一样，我的是win10，按win10的方法创建：<br><img src="/images/docker-part4-1.jpg" alt="docker-part4-1.jpg"></p>
+<p>(2) <strong>创建虚拟机</strong><br>创建2个虚拟机myvm1、myvm2 并使用上一步创建的交换机”myswitch”：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm1</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm2</span><br></pre></td></tr></table></figure></p>
+<p><strong>查看虚拟机的IP地址</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER   STATE     URL                        SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   -        hyperv   Running   tcp://192.168.1.228:2376           v17.12.1-ce</span><br><span class="line">myvm2   -        hyperv   Running   tcp://192.168.1.230:2376           v17.12.1-ce</span><br></pre></td></tr></table></figure></p>
+<h4 id="初始化swarm"><a href="#初始化swarm" class="headerlink" title="初始化swarm"></a>初始化swarm</h4><p><code>myvm1</code> 作为swarm manager, <code>myvm2</code> 作为 worker 加入 swarm.</p>
+<p><strong>myvm1 作为swarm manager：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine ssh myvm1 &quot;docker swarm init --advertise-addr 192.168.1.228&quot;</span><br><span class="line">Swarm initialized: current node (4ze8fmc9r40vt93dxrq2t9ism) is now a manager.</span><br><span class="line"></span><br><span class="line">To add a worker to this swarm, run the following command:</span><br><span class="line"></span><br><span class="line">    docker swarm join --token SWMTKN-1-0w1gmhcsvbfr99yzb7mnx8lo1eyh4irkulki3k21i5cbywt5u9-682g19v43mkhw8e2t1jw9xf60 192.168.1.228:2377</span><br><span class="line"></span><br><span class="line">To add a manager to this swarm, run &apos;docker swarm join-token manager&apos; and follow the instructions.</span><br></pre></td></tr></table></figure></p>
+<p><strong>myvm2 作为 worker 加入 swarm：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine ssh myvm2 &quot;docker swarm join --token SWMTKN-1-0w1gmhcsvbfr99yzb7mnx8lo1eyh4irkulki3k21i5cbywt5u9-682g19v43mkhw8e2t1jw9xf60 192.168.1.228:2377&quot;</span><br><span class="line">This node joined a swarm as a worker.</span><br></pre></td></tr></table></figure></p>
+<p>swarm 已经创建完成了，在swarm manager上运行<code>docker node ls</code> 查看swarm的节点：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine ssh myvm1 &quot;docker node ls&quot;</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS</span><br><span class="line">4ze8fmc9r40vt93dxrq2t9ism *   myvm1               Ready               Active              Leader</span><br><span class="line">5qh5401pl422vmd2wzqlvq7l2     myvm2               Ready               Active</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>离开swarm</strong><br>在节点上运行 <code>docker swarm leave</code> 即可脱离swarm.</p>
+</blockquote>
+<h4 id="部署app到swarm"><a href="#部署app到swarm" class="headerlink" title="部署app到swarm"></a>部署app到swarm</h4><p>(1) <em>Configure a <code>docker-machine</code> shell to the swarm manager</em><br>在上面我们执行的一些命令是通过 <code>docker-machine ssh</code> 和虚拟机交互的。<br>另一种选择是运行 <code>docker-machine env &lt;machine&gt;</code> 去获得并运行一条指令使当前终端可与虚拟机直接交互。<br>这种方法在下面的步骤中有很多方便，因为它可以使用你本地的 <code>docker-compose.yml</code> 文件去部署app到”远程”而不必拷贝这个文件。</p>
+<p>执行 <code>docker-machine env myvm1</code> ,然后运行此命令的最后一条输出，使当前终端与 <code>myvm1</code> 交互。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine env myvm1</span><br><span class="line">$Env:DOCKER_TLS_VERIFY = &quot;1&quot;</span><br><span class="line">$Env:DOCKER_HOST = &quot;tcp://192.168.1.228:2376&quot;</span><br><span class="line">$Env:DOCKER_CERT_PATH = &quot;C:\Users\googol\.docker\machine\machines\myvm1&quot;</span><br><span class="line">$Env:DOCKER_MACHINE_NAME = &quot;myvm1&quot;</span><br><span class="line">$Env:COMPOSE_CONVERT_WINDOWS_PATHS = &quot;true&quot;</span><br><span class="line"># Run this command to configure your shell:</span><br><span class="line"># &amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression</span><br></pre></td></tr></table></figure></p>
+<p>运行它给出的命令，配置当前终端与 <code>myvm1</code> 交互。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression</span><br></pre></td></tr></table></figure></p>
+<p>执行 <code>docker-machine ls</code> 可以确认当前终端是否与 <code>myvm1</code> 交互，myvm1 的 ACTIVE 栏是个 <code>*</code> 号，说明当前终端与myvm1交互。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER   STATE     URL                        SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        hyperv   Running   tcp://192.168.1.228:2376           v17.12.1-ce</span><br><span class="line">myvm2   -        hyperv   Running   tcp://192.168.1.230:2376           v17.12.1-ce</span><br></pre></td></tr></table></figure></p>
+<p>(2) <strong>部署app到swarm</strong><br>跟上面的Part 3部分差不多，<code>docker-compose.yml</code> 文件就是part 3时创建的文件，执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure></p>
+<p>执行 <code>docker stack ps getstartedlab</code> 查看服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker stack ps getstartedlab</span><br><span class="line">ID                  NAME                  IMAGE                          NODE                DESIRED STATE       CURRENT STATE                  ERROR               PORTS</span><br><span class="line">nfprf3rrwjwj        getstartedlab_web.1   googolprex/get-started:part2   myvm1               Running             Preparing about a minute ago</span><br><span class="line">jj7kh9fbpmks        getstartedlab_web.2   googolprex/get-started:part2   myvm2               Running             Preparing about a minute ago</span><br><span class="line">mj2nawupx3af        getstartedlab_web.3   googolprex/get-started:part2   myvm1               Running             Preparing about a minute ago</span><br><span class="line">jkpy7pvow7yw        getstartedlab_web.4   googolprex/get-started:part2   myvm2               Running             Preparing about a minute ago</span><br><span class="line">uy0lzogmksdv        getstartedlab_web.5   googolprex/get-started:part2   myvm2               Running             Preparing about a minute ago</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以看到<code>DESIRED STATE</code>栏是Running, <code>CURRENT STATE</code>栏是Preparing about a minute ago<br>说明当前正在启动，还没启动完成。所以这时候在浏览器输入 myvm1 或 myvm2 的IP地址是打开网页失败的。</p>
+</blockquote>
+<p>用 <code>docker service ls</code> 查看就更直观了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker service ls</span><br><span class="line">ID                  NAME                MODE                REPLICAS            IMAGE                          PORTS</span><br><span class="line">osdkujqjhioj        getstartedlab_web   replicated          0/5                 googolprex/get-started:part2   *:80-&gt;80/tcp</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以看出5个副本还没有一个启动完成。</p>
+</blockquote>
+<p>这样等待了二十多分钟后，查询：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker stack ps getstartedlab</span><br><span class="line">ID                  NAME                  IMAGE                          NODE                DESIRED STATE       CURRENT STATE              ERROR               PORTS</span><br><span class="line">nfprf3rrwjwj        getstartedlab_web.1   googolprex/get-started:part2   myvm1               Running             Running 5 minutes ago</span><br><span class="line">jj7kh9fbpmks        getstartedlab_web.2   googolprex/get-started:part2   myvm2               Running             Preparing 26 minutes ago</span><br><span class="line">mj2nawupx3af        getstartedlab_web.3   googolprex/get-started:part2   myvm1               Running             Running 5 minutes ago</span><br><span class="line">jkpy7pvow7yw        getstartedlab_web.4   googolprex/get-started:part2   myvm2               Running             Preparing 26 minutes ago</span><br><span class="line">uy0lzogmksdv        getstartedlab_web.5   googolprex/get-started:part2   myvm2               Running             Preparing 26 minutes ago</span><br><span class="line">PS E:\Docker&gt; docker service ls</span><br><span class="line">ID                  NAME                MODE                REPLICAS            IMAGE                          PORTS</span><br><span class="line">osdkujqjhioj        getstartedlab_web   replicated          2/5                 googolprex/get-started:part2   *:80-&gt;80/tcp</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以看到<code>myvm1</code>节点的服务已经率先启动完成了。<br><code>myvm2</code>节点不久后也启动好了，这里就不再列出来了。</p>
+</blockquote>
+<p>在浏览器输入 <code>myvm1</code> 或 <code>myvm2</code> 的地址：<br><img src="/images/docker-part4-2.jpg" alt="docker-part4-2.jpg"><br><img src="/images/docker-part4-3.jpg" alt="docker-part4-3.jpg"></p>
+<p>停止app：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure></p>
+<p><strong>断开当前终端与 <code>myvm1</code> 的交互：</strong><br>执行 <code>docker-machine env -u</code> ，然后根据提示执行最后一条指令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PS E:\Docker&gt; docker-machine env -u</span><br><span class="line">Remove-Item Env:\\DOCKER_TLS_VERIFY</span><br><span class="line">Remove-Item Env:\\DOCKER_HOST</span><br><span class="line">Remove-Item Env:\\DOCKER_CERT_PATH</span><br><span class="line">Remove-Item Env:\\DOCKER_MACHINE_NAME</span><br><span class="line"># Run this command to configure your shell:</span><br><span class="line"># &amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env -u | Invoke-Expression</span><br><span class="line">PS E:\Docker&gt; &amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env -u | Invoke-Expression</span><br></pre></td></tr></table></figure></p>
+<p><strong>启动和关闭Docker 虚拟机的命令</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine start &lt;machine-name&gt;</span><br><span class="line">docker-machine stop &lt;machine-name&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Part5 和 Part6就不翻译了，跟着文档做，入门还是很简单的。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/notes/Makefile内置函数使用/20180605.html" rel="next" title="Makefile内置函数使用">
+                <i class="fa fa-chevron-left"></i> Makefile内置函数使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/notes/friend-link/20180605.html" rel="prev" title="收集的一些个人网站">
+                收集的一些个人网站 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Googol Buck</p>
+              <p class="site-description motion-element" itemprop="description">Until Death</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-安装"><span class="nav-number">1.</span> <span class="nav-text">Docker 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装完后，可以看一下docker的版本"><span class="nav-number">1.1.</span> <span class="nav-text">安装完后，可以看一下docker的版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行docker-version-或-docker-info-看详细信息"><span class="nav-number">1.2.</span> <span class="nav-text">运行docker version 或 docker info 看详细信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试Docker安装"><span class="nav-number">1.3.</span> <span class="nav-text">测试Docker安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回顾并作表"><span class="nav-number">1.4.</span> <span class="nav-text">回顾并作表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-2-Containers"><span class="nav-number">2.</span> <span class="nav-text">Part 2:Containers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过-Dockerfile-创建镜像"><span class="nav-number">2.1.</span> <span class="nav-text">通过 Dockerfile 创建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建app"><span class="nav-number">2.2.</span> <span class="nav-text">构建app</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行app"><span class="nav-number">2.3.</span> <span class="nav-text">运行app</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分享你的镜像"><span class="nav-number">2.4.</span> <span class="nav-text">分享你的镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part-3-Services"><span class="nav-number">3.</span> <span class="nav-text">Part 3: Services</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-docker-compose-yml-文件"><span class="nav-number">3.1.</span> <span class="nav-text">创建 docker-compose.yml 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行此Services"><span class="nav-number">3.2.</span> <span class="nav-text">运行此Services</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Part4-Swarms"><span class="nav-number">4.</span> <span class="nav-text">Part4: Swarms</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建虚拟机"><span class="nav-number">4.1.</span> <span class="nav-text">创建虚拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化swarm"><span class="nav-number">4.2.</span> <span class="nav-text">初始化swarm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署app到swarm"><span class="nav-number">4.3.</span> <span class="nav-text">部署app到swarm</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Googol Buck</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
