@@ -298,6 +298,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/notes/rtl8292es-WiFi中继/20180605.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Googol Buck">
+      <meta itemprop="description" content="Until Death">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Googol's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/notes/rtl8292es-WiFi中继/20180605.html" itemprop="url">
+                  rtl8292es-WiFi中继
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-05 07:41:22 / 修改时间：22:16:31" itemprop="dateCreated datePublished" datetime="2018-06-05T07:41:22-04:00">2018-06-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>公司的某个项目需要做WiFi中继，使用的WiFi芯片是 Realtek 的 rtl8192es。<br>为了方便用户，还需要做搜索附近wifi的功能。这里只做后台，web前端就不写了。</p>
+<p>安装rtl8192es驱动后，至少会出现两接口 <code>wlan0</code> 和 <code>wlan0-vxd</code>。<br>其中 <code>wlan0</code> 做AP，<code>wlan0-vxd</code> 做STA。</p>
+<h3 id="配置-wlan0-vxd"><a href="#配置-wlan0-vxd" class="headerlink" title="配置 wlan0-vxd"></a>配置 wlan0-vxd</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IFNAME=wlan0-vxd</span><br><span class="line">iwpriv $IFNAME copy_mib</span><br><span class="line">iwpriv $IFNAME set_mib opmode=8</span><br><span class="line">ifconfig $IFNAME hw ether 00:e0:4c:01:f0:17</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/notes/rtl8292es-WiFi中继/20180605.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/notes/Python虚拟环境/20180605.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1013,154 +1159,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/notes/Hexo站内链接引用的方法/20180605.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Googol Buck">
-      <meta itemprop="description" content="Until Death">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Googol's Notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/notes/Hexo站内链接引用的方法/20180605.html" itemprop="url">
-                  Hexo站内链接引用的方法
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-06-05 04:33:49 / 修改时间：04:38:01" itemprop="dateCreated datePublished" datetime="2018-06-05T04:33:49-04:00">2018-06-05</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们在Hexo中编写的文件都是Markdown文件，但是最终生成的静态文件<br>的路径是编辑日期加文件名，具体形式跟 <code>_config.yml</code> 的配置有关. </p>
-<p>而每个Markdown文件的编辑日期又是不同的，所以要去查找编辑日期就不现实了。<br>好在我们可以通过 <code>post_link</code> 来实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post_link 文章源文件(不要后缀) 链接名(可选) %&#125;</span><br></pre></td></tr></table></figure>
-<p>我们以 <code>hello-world.md</code> 为例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post_link hello-world %&#125;</span><br></pre></td></tr></table></figure>
-<a href="/notes/hello-world/20180605.html" title="Hello World">Hello World</a>
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post_link hello-world  Hello %&#125;</span><br></pre></td></tr></table></figure>
-<a href="/notes/hello-world/20180605.html" title="Hello">Hello</a>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1208,7 +1206,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1235,7 +1233,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
